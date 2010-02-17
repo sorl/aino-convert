@@ -26,7 +26,7 @@ Cons
 Demo
 ====
 There is a demo in the `demo` directory.
-To run the deom it just cd in to it and type: `./run`
+To run the demo it just cd in to it and type: `./run`
 
 
 .. _ImageMagic convert: http://www.imagemagick.org/

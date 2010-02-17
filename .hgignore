@@ -6,3 +6,6 @@ syntax: glob
 .svn
 .DS_Store
 demo/media/cache
+build
+dist
+aino_convert.egg-info
