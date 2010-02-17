@@ -49,8 +49,8 @@ options and settings):
 
 Other valid options:
 
-- `crop` This will crop the image to the specified dimension, not that if you
-  really want it to crop be sure to use the `^` modifier.
+- `crop` This will crop the image to the specified dimension, note that if you
+  really want it to crop as expected be sure to use the `^` modifier.
 
 - `colorspace=value` Set the image colorspace, see `colorspace`_
 
