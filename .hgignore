@@ -1,0 +1,8 @@
+syntax: glob
+
+*.pyc
+*.swp
+._*
+.svn
+.DS_Store
+demo/media/cache

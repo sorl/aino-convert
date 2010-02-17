@@ -1,0 +1,31 @@
+{% load convert_tags %}<html>
+<head>
+    <title>aino-convert demo</title>
+</head>
+<body>
+
+<p>&#123;% convert "mask.jpg" "-edge 1 -negate -normalize -colorspace Gray -blur 0x.5 -contrast-stretch 0x50%" "gif" as im %&#125;<p>
+{% convert "mask.jpg" "-edge 1 -negate -normalize -colorspace Gray -blur 0x.5 -contrast-stretch 0x50%" "gif" as im %}
+<ul>
+    <li>im.width: {{ im.width }}</li>
+    <li>im.height: {{ im.height }}</li>
+    <li>im.size: {{ im.size }}</li>
+    <li>im.url: {{ im.url }}</li>
+    <li>im.relative_url: {{ im.relative_url }}</li>
+    <li>im.name (relative file path): {{ im.name }}</li>
+    <li>im.path: {{ im.path }}</li>
+    <li>im.tag: {{ im.tag|escape }}
+    <li>im.__unicode__ = im.name: {{ im }}
+</ul>
+<p>&#123;% thumbnail im "300" "png" %&#125;</p>
+{% thumbnail im "300,ext=png" %}
+
+<p>&#123;% convert "" "-pointsize 48 label:'aino-convert is dä bomb!'" %&#125;</p>
+{% convert "" "-pointsize 48 label:'aino-convert is dä bomb!'" %}
+
+<p>&#123;% convert "" "-size 320x120 xc:transparent -draw \"fill tomato circle 250,30 310,30 font Verdana font-size 72 fill dodgerblue stroke black stroke-width 1 translate 10,110 rotate -15 text -25,0 'Aino Convert'\"" "png" %&#125;</p>
+{% convert "" "-size 320x120 xc:transparent -draw \"fill tomato circle 250,30 300,100 font Verdana font-size 72 fill transparent stroke black stroke-width 1 translate 10,110 rotate -15 text -25,0 'Aino Convert'\"" "png" %}
+
+<p><a href="/1/">Previous</a> | <a href="/3/">Next</a></p>
+</body>
+</html>

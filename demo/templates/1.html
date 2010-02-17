@@ -1,0 +1,27 @@
+{% load convert_tags %}<html>
+<head>
+    <title>aino-convert demo</title>
+</head>
+<body>
+
+<p>&#123;% thumbnail "aino.jpg" "200x200" %&#125;<p>
+{% thumbnail "aino.jpg" "200x200" %}
+
+<p>&#123;% thumbnail "aino.jpg" "x100" %&#125;<p>
+{% thumbnail "aino.jpg" "x100" %}
+
+<p>&#123;% thumbnail "aino.jpg" "80x80^gt,crop" %&#125;<p>
+{% thumbnail "aino.jpg" "80x80^gt,crop" %}
+
+<p>&#123;% thumbnail "aino.jpg" "200x50^,crop,colorspace=gray" %&#125;<p>
+{% thumbnail "aino.jpg" "200x50^,crop,colorspace=gray" %}
+
+<p>&#123;% thumbnail "http://www.python.org/images/python-logo.gif" "1000gt,ext=png" %&#125;<p>
+{% thumbnail "http://www.python.org/images/python-logo.gif" "1000gt,ext=png" %}
+
+<p>&#123;% thumbnail "" "http://media.djangoproject.com/img/site/hdr_logo.gif" "x80" %&#125;<p>
+{% thumbnail "http://media.djangoproject.com/img/site/hdr_logo.gif" "x80" %}
+
+<p><a href="/2/">Next</p>
+</body>
+</html>
