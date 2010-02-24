@@ -1,6 +1,5 @@
 from __future__ import with_statement
 import hashlib
-import mimetypes
 import os
 import random
 import re
@@ -123,20 +122,19 @@ class EmptyMediaFile(object):
 
 
 def get_remote(name):
-    type_ = mimetypes.guess_type(name)[0]
-    if type_:
-        ext = mimetypes.guess_extension(type_).strip('.')
-        ext = ext != 'jpe' and ext or 'jpg' # jpe is guessed for jpg
-    else:
-        m = re_ext.search(name)
-        ext = m and m.group(1).lower() or 'jpg' # brutally resort to jpg
-    local = get_mediafile(name, ext)
-    if not local.exists():
+    """
+    Gets a remote file and stores locally
+    """
+    # we cn only use the filename to guess extension
+    m = re_ext.search(name)
+    ext = m and m.group(1).lower() or 'jpg' # brutally resort to jpg
+    cached = get_mediafile(name, ext)
+    if not cached.exists():
         # this is the only timeout option for urllib in python <= 2.5.x
         socket.setdefaulttimeout(settings.CONVERT_REMOTE_TIMEOUT)
-        local.write(urllib.urlopen(name).read())
-        local.set_xmp({'source': name})
-    return local
+        cached.write(urllib.urlopen(name).read())
+        cached.set_xmp({'source': name})
+    return cached
 
 def get_mediafile(seed, ext=None):
     """
