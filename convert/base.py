@@ -1,8 +1,11 @@
 from __future__ import with_statement
 import hashlib
+import mimetypes
 import os
 import random
 import re
+import urllib
+import socket
 from os.path import isfile, isdir, getmtime, dirname, getsize, normpath, join as pjoin
 from PIL import Image
 from django.utils._os import safe_join
@@ -24,22 +27,9 @@ class MediaFile(object):
     """
     def __init__(self, name):
         name = force_unicode(name)
-        # remote files need to be cached first
+        # remote files need to be local first
         if re_remote.match(name):
-            m = re_ext.search(name)
-            ext = m and m.group(1).lower() or 'jpg' # brutally resort to jpg
-            cached = get_mediafile(name, ext)
-            if not cached.exists():
-                try:
-                    helpers.execute(settings.CONVERT_WGET_PATH,
-                        ['-T', '%s' % settings.CONVERT_REMOTE_TIMEOUT,
-                        '-O', cached.path, name])
-                except helpers.ExecuteException:
-                    # we treat this as source missing
-                    pass
-                else:
-                    cached.set_xmp({'source': name})
-            name = cached.name
+            name = get_remote(name).name
         self.name = name
         path = normpath(safe_join(settings.MEDIA_ROOT, self.name))
         self.path = smart_str(path)
@@ -131,6 +121,22 @@ class EmptyMediaFile(object):
     def __getattr__(self, name):
         return ''
 
+
+def get_remote(name):
+    type_ = mimetypes.guess_type(name)[0]
+    if type_:
+        ext = mimetypes.guess_extension(type_).strip('.')
+        ext = ext != 'jpe' and ext or 'jpg' # jpe is guessed for jpg
+    else:
+        m = re_ext.search(name)
+        ext = m and m.group(1).lower() or 'jpg' # brutally resort to jpg
+    local = get_mediafile(name, ext)
+    if not local.exists():
+        # this is the only timeout option for urllib in python <= 2.5.x
+        socket.setdefaulttimeout(settings.CONVERT_REMOTE_TIMEOUT)
+        local.write(urllib.urlopen(name).read())
+        local.set_xmp({'source': name})
+    return local
 
 def get_mediafile(seed, ext=None):
     """

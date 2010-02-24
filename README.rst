@@ -1,7 +1,7 @@
 aino-convert
 ============
 
-aino-convert is a basically wrapper for `ImageMagick convert` with caching.
+aino-convert is a basically wrapper for `ImageMagick convert`_ with caching.
 The main purpose is to help generate quality thumbnails simply and
 efficiently. During the development of sorl-thumbnail I learned some and
 eventually I took the plunge to write something using ImageMagick convert
@@ -10,7 +10,7 @@ instead of PIL.
 Pros
 ----
 - Simple thumbnail tag generating high quality output
-- Remote images handling on the fly
+- Remote files handling on the fly
 - Usage of convert commandline syntax for infinate flexibility
 - Caching mechanism
 - Cleanup of unused images or conversions of images can be made
@@ -18,7 +18,7 @@ Pros
 
 Cons
 ----
-- Requirements: convert, exiv2, wget
+- Requirements: convert, exiv2 is nice to have
 - Storage is local file storage only
 - Security (protecting the developer from himself)
 

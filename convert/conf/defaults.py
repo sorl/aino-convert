@@ -49,5 +49,5 @@ CONVERT_DEBUG = False
 # when True failing to write xmp data can raise errors
 CONVERT_EXIV2_DEBUG = False
 
-# timeout in seconds for caching remote files locally, used by wget
+# timeout in seconds for caching remote files locally
 CONVERT_REMOTE_TIMEOUT = 5
