@@ -134,7 +134,7 @@ def get_remote(name):
         socket.setdefaulttimeout(settings.CONVERT_REMOTE_TIMEOUT)
         try:
             data = urllib2.urlopen(name).read()
-        except urllib2.HTTPError:
+        except:
             return cached
         cached.write(data)
         cached.set_xmp({'source': name})
