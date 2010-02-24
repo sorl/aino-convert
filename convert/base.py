@@ -3,7 +3,7 @@ import hashlib
 import os
 import random
 import re
-import urllib
+import urllib2
 import socket
 from os.path import isfile, isdir, getmtime, dirname, getsize, normpath, join as pjoin
 from PIL import Image
@@ -125,14 +125,18 @@ def get_remote(name):
     """
     Gets a remote file and stores locally
     """
-    # we cn only use the filename to guess extension
+    # we can only use the filename to guess extension
     m = re_ext.search(name)
     ext = m and m.group(1).lower() or 'jpg' # brutally resort to jpg
     cached = get_mediafile(name, ext)
     if not cached.exists():
-        # this is the only timeout option for urllib in python <= 2.5.x
+        # this is the only timeout option for urllib2 in python <= 2.5.x
         socket.setdefaulttimeout(settings.CONVERT_REMOTE_TIMEOUT)
-        cached.write(urllib.urlopen(name).read())
+        try:
+            data = urllib2.urlopen(name).read()
+        except urllib2.HTTPError:
+            return cached
+        cached.write(data)
         cached.set_xmp({'source': name})
     return cached
 
