@@ -1,8 +1,8 @@
 from __future__ import with_statement
+import hashlib
 import os
 import random
 import re
-import hashlib
 from os.path import isfile, isdir, getmtime, dirname, getsize, normpath, join as pjoin
 from PIL import Image
 from django.utils._os import safe_join
@@ -13,7 +13,8 @@ from convert.conf import settings
 
 
 re_remote = re.compile(r'^(https?|ftp):\/\/')
-re_whitespace = re.compile('\s{2,}')
+re_whitespace = re.compile(r'\s{2,}')
+re_ext = re.compile(r'\.([a-zA-Z]{2,4})$')
 
 
 class MediaFile(object):
@@ -25,7 +26,8 @@ class MediaFile(object):
         name = force_unicode(name)
         # remote files need to be cached first
         if re_remote.match(name):
-            ext = os.path.splitext(name)[1].strip('.')
+            m = re_ext.search(name)
+            ext = m and m.group(1).lower() or 'jpg' # brutally resort to jpg
             cached = get_mediafile(name, ext)
             if not cached.exists():
                 try:
