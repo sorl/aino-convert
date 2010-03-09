@@ -39,38 +39,43 @@ class MediaFile(object):
     def __unicode__(self):
         return self.name
 
-    def _get_dimensions(self):
+    def __len__(self):
+        "This is for field validation"
+        return len(self.name)
+
+    @property
+    def dimensions(self):
         if not hasattr(self, '_dimensions'):
             self._dimensions = Image.open(self.path).size
         return self._dimensions
-    dimensions = property(_get_dimensions)
     
     width = property(lambda self: self.dimensions[0])
     height = property(lambda self: self.dimensions[1])
 
+    @property
     def size(self):
         return getsize(self.path)
 
-    def _get_tag(self):
+    @property
+    def tag(self):
         return settings.CONVERT_TAG % {
             'width': self.width,
             'height': self.height,
             'url': self.url,
         } 
-    tag = property(_get_tag)
 
-    def _get_relative_url(self):
+    @property
+    def relative_url(self):
         return iri_to_uri(self.name.replace('\\', '/'))
-    relative_url = property(_get_relative_url)
-    
-    def _get_url(self):
+   
+    @property
+    def url(self):
         if not hasattr(self, '_url'):
             random.seed(self.name)
             base_url = random.choice(settings.STATIC_URLS)
             random.seed() # reset the seed
             self._url = "%s%s" % (base_url, self.relative_url)
         return self._url
-    url = property(_get_url)
 
     def set_xmp(self, params, clear=True):
         if settings.CONVERT_SET_XMP:
@@ -116,6 +121,9 @@ class EmptyMediaFile(object):
 
     def __unicode__(self):
         return ''
+
+    def __len__(self):
+        return 0
 
     def __getattr__(self, name):
         return ''
