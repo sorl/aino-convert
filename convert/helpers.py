@@ -48,7 +48,7 @@ def write_xmp(path, params, clear=True, namespace='dc'):
 def thumbnail_to_convert(value):
     """
     Helper function to generate proper convert args syntax from a simpler
-    syntax. returns convert output-options and output-extension
+    syntax. returns convert output-options
     """
     if not len(value):
         raise ThumbnailException('Missing argument.')
