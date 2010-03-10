@@ -58,11 +58,11 @@ class MediaFile(object):
 
     @property
     def tag(self):
-        return settings.CONVERT_TAG % {
+        return mark_safe(settings.CONVERT_TAG % {
             'width': self.width,
             'height': self.height,
             'url': self.url,
-        } 
+        })
 
     @property
     def relative_url(self):
