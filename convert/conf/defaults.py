@@ -41,7 +41,6 @@ CONVERT_404_URL = '/404/'
 # users path
 CONVERT_PATH = 'convert'
 CONVERT_EXIV2_PATH = 'exiv2'
-CONVERT_WGET_PATH = 'wget'
 
 # when True ConvertNode.render can raise errors
 CONVERT_DEBUG = False

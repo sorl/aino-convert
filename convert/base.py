@@ -77,6 +77,13 @@ class MediaFile(object):
             self._url = "%s%s" % (base_url, self.relative_url)
         return self._url
 
+    #TODO: cache alternatives for "expensive" disk operations like this
+    @property
+    def xmp(self):
+        if not hasattr(self, '_xmp'):
+            self._xmp = helpers.read_xmp(self.path)
+        return self._xmp
+
     def set_xmp(self, params, clear=True):
         if settings.CONVERT_SET_XMP:
             # some files cannot have XMP metadata written by exiv2, notably GIF

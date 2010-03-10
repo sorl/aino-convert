@@ -1,7 +1,7 @@
 import re
 from subprocess import Popen, PIPE
 from convert.conf import settings
-from django.utils.encoding import smart_str
+from django.utils.encoding import smart_str, DEFAULT_LOCALE_ENCODING
 
 
 re_geometry = re.compile('^(\d+)[\^><]*x(\d+)[\^><]*$')
@@ -28,10 +28,11 @@ def execute(cmd, args):
         args.insert(0, cmd)
         args = map(smart_str, args)
         shell = False
-    p = Popen(args, shell=shell, stderr=PIPE)
+    p = Popen(args, shell=shell, stderr=PIPE, stdout=PIPE)
     retcode = p.wait()
     if retcode != 0:
-        raise ExecuteException(p.stderr.read().strip())
+        raise ExecuteException(p.stderr.read().decode(DEFAULT_LOCALE_ENCODING))
+    return p.stdout.read().decode(DEFAULT_LOCALE_ENCODING)
 
 def write_xmp(path, params, clear=True, namespace='dc'):
     """
@@ -44,6 +45,19 @@ def write_xmp(path, params, clear=True, namespace='dc'):
         if v:
             execute(settings.CONVERT_EXIV2_PATH,
                     ['-M', 'set Xmp.%s.%s %s' % (namespace, k, v), path])
+
+def read_xmp(path, namespace='dc'):
+    """
+    Reads Adobe XMP (metadata) from file.
+    """
+    data = execute(settings.CONVERT_EXIV2_PATH, ['-PXkt', path])
+    re_xmp = re.compile(r'^Xmp\.%s\.(?P<key>\w+)\s+(?P<value>.*)$' % namespace)
+    xmp = {}
+    for row in data.split('\n'):
+        m = re_xmp.match(row)
+        if m:
+            xmp[m.group('key')] = m.group('value')
+    return xmp
 
 def thumbnail_to_convert(value):
     """
