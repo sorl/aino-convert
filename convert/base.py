@@ -82,8 +82,10 @@ class MediaFile(object):
     @property
     def metadata(self):
         # use local import for use without metadata
-        from metadata import Metadata
-        return Metadata(self.path)
+        if not hasattr(self, '_metadata'):
+            from metadata import Metadata
+            self._metadata = Metadata(self.path)
+        return self._metadata
 
     def _write_metadata(self, obj):
         if settings.CONVERT_WRITE_METADATA:
