@@ -18,7 +18,7 @@ Pros
 
 Cons
 ----
-- Requirements: convert, exiv2 is nice to have
+- Requirements: convert, pyexiv2 is nice to have
 - Storage is local file storage only
 - Security (protecting the developer from himself)
 
