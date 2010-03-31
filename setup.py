@@ -5,14 +5,14 @@ except ImportError:
     from distutils.core import setup
 
 
-fn = abspath(pjoin(dirname(__file__), 'README.rst')) 
+fn = abspath(pjoin(dirname(__file__), 'README.rst'))
 fp = open(fn, 'r')
 long_description = fp.read()
 fp.close()
 
 setup(
     name='aino-convert',
-    version='0.1.0.6',
+    version='0.1.0.7',
     url='http://bitbucket.org/aino/aino-convert/',
     license='BSD',
     author='Mikko Hellsing',
