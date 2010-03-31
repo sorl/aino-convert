@@ -3,12 +3,12 @@ import hashlib
 import os
 import random
 import re
-import urllib2
 import socket
+import urllib2
 from os.path import isfile, isdir, getmtime, dirname, getsize, normpath, join as pjoin
 from PIL import Image
-from django.utils._os import safe_join
 from django.utils.encoding import force_unicode, smart_str, iri_to_uri
+from django.utils._os import safe_join
 from django.utils.safestring import mark_safe
 from convert import helpers
 from convert.conf import settings
@@ -17,6 +17,7 @@ from convert.conf import settings
 re_remote = re.compile(r'^(https?|ftp):\/\/')
 re_whitespace = re.compile(r'\s{2,}')
 re_ext = re.compile(r'\.([a-zA-Z]{2,4})$')
+
 
 
 class MediaFile(object):
@@ -48,7 +49,7 @@ class MediaFile(object):
         if not hasattr(self, '_dimensions'):
             self._dimensions = Image.open(self.path).size
         return self._dimensions
-    
+
     width = property(lambda self: self.dimensions[0])
     height = property(lambda self: self.dimensions[1])
 
@@ -67,7 +68,7 @@ class MediaFile(object):
     @property
     def relative_url(self):
         return iri_to_uri(self.name.replace('\\', '/'))
-   
+
     @property
     def url(self):
         if not hasattr(self, '_url'):
@@ -79,19 +80,14 @@ class MediaFile(object):
 
     #TODO: cache alternatives for "expensive" disk operations like this
     @property
-    def xmp(self):
-        if not hasattr(self, '_xmp'):
-            self._xmp = helpers.read_xmp(self.path)
-        return self._xmp
+    def metadata(self):
+        # use local import for use without metadata
+        from metadata import Metadata
+        return Metadata(self.path)
 
-    def set_xmp(self, params, clear=True):
-        if settings.CONVERT_SET_XMP:
-            # some files cannot have XMP metadata written by exiv2, notably GIF
-            try:
-                helpers.write_xmp(self.path, params, clear=clear)
-            except helpers.ExecuteException:
-                if settings.CONVERT_EXIV2_DEBUG:
-                    raise
+    def _write_metadata(self, obj):
+        if settings.CONVERT_WRITE_METADATA:
+            self.metadata.write(obj)
 
     def write(self, data):
         with open(self.path, 'wb') as fp:
@@ -115,7 +111,7 @@ class MediaFile(object):
         if not dest.exists() or getmtime(dest.path) < getmtime(self.path):
             args = "%s %s %s" % (self.path, options, dest.path)
             helpers.execute(settings.CONVERT_PATH, args)
-            dest.set_xmp({'source': self.name, 'relation': options})
+            dest._write_metadata({'source': self.name, 'relation': [options]})
         return dest
 
 
@@ -152,7 +148,7 @@ def get_remote(name):
         except:
             return cached
         cached.write(data)
-        cached.set_xmp({'source': name})
+        cached._write_metadata({'source': name})
     return cached
 
 def get_mediafile(seed, ext=None):
@@ -172,5 +168,6 @@ def convert_solo(options, ext=None):
     if not dest.exists():
         args = "%s %s" % (options, dest.path)
         helpers.execute(settings.CONVERT_PATH, args)
-        dest.set_xmp({'relation': options})
+        dest._write_metadata({'relation': [options]})
     return dest
+

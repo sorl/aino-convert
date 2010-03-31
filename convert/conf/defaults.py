@@ -27,8 +27,8 @@ CONVERT_CACHE = 'cache'
 # 3: will most likely lead to that every cached file will have its own dir
 CONVERT_CACHE_SUBDIR_LEVELS = 1
 
-# write XMP data to file, this can be useful for finding stale cache
-CONVERT_SET_XMP = True
+# write XMP metadata to file, this can be useful for finding stale cache
+CONVERT_WRITE_METADATA = True
 
 # will be returned on errors rather than an img tag with an empty source which
 # is known to cause some serious problems as in requesting the paga aigain
@@ -40,13 +40,15 @@ CONVERT_404_URL = '/404/'
 # path to shell commands, full path is only needed if the command is not in
 # users path
 CONVERT_PATH = 'convert'
-CONVERT_EXIV2_PATH = 'exiv2'
 
 # when True ConvertNode.render can raise errors
 CONVERT_DEBUG = False
 
-# when True failing to write xmp data can raise errors
-CONVERT_EXIV2_DEBUG = False
+# when True failing to write XMP metadata can raise errors, note that this
+# will always happend when trying to write to files that does not support
+# XMP metadata, for example GIF
+CONVERT_METADATA_DEBUG = False
 
 # timeout in seconds for caching remote files locally
 CONVERT_REMOTE_TIMEOUT = 5
+

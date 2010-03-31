@@ -28,7 +28,7 @@ class ThumbnailNode(ConvertBaseNode):
         self.input_file = input_file
         self.options = options
         self.as_var = as_var
-    
+
     def render(self, context):
         try:
             input_file = force_unicode(self.input_file.resolve(context))
@@ -100,3 +100,4 @@ def convert(parser, token):
     input_file, options = map(parser.compile_filter,
             args[1:])
     return ConvertNode(input_file, options, ext, as_var)
+

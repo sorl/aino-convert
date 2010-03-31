@@ -1,5 +1,5 @@
-from django.db import models
 from django.core.exceptions import ValidationError
+from django.db import models
 from django.utils.encoding import force_unicode
 from base import MediaFile
 
@@ -36,3 +36,4 @@ class MediaFileField(models.CharField):
             return MediaFile(value)
         except Exception, e:
             raise ValidationError(e.message)
+

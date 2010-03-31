@@ -15,6 +15,7 @@ class ThumbnailException(Exception):
 class ExecuteException(Exception):
     pass
 
+
 def execute(cmd, args):
     """
     Just a simple wrapper for executing commands. args is expected to be a
@@ -34,31 +35,6 @@ def execute(cmd, args):
         raise ExecuteException(p.stderr.read().decode(DEFAULT_LOCALE_ENCODING))
     return p.stdout.read().decode(DEFAULT_LOCALE_ENCODING)
 
-def write_xmp(path, params, clear=True, namespace='dc'):
-    """
-    Used to write Adobe XMP (metadata) to file.
-    """
-    for k, v in params.items():
-        if clear:
-            execute(settings.CONVERT_EXIV2_PATH,
-                    ['-M', 'del Xmp.%s.%s' % (namespace, k), path])
-        if v:
-            execute(settings.CONVERT_EXIV2_PATH,
-                    ['-M', 'set Xmp.%s.%s %s' % (namespace, k, v), path])
-
-def read_xmp(path, namespace='dc'):
-    """
-    Reads Adobe XMP (metadata) from file.
-    """
-    data = execute(settings.CONVERT_EXIV2_PATH, ['-PXkt', path])
-    re_xmp = re.compile(r'^Xmp\.%s\.(?P<key>\w+)\s+(?P<value>.*)$' % namespace)
-    xmp = {}
-    for row in data.split('\n'):
-        m = re_xmp.match(row)
-        if m:
-            xmp[m.group('key')] = m.group('value')
-    return xmp
-
 def thumbnail_to_convert(value):
     """
     Helper function to generate proper convert args syntax from a simpler
@@ -74,7 +50,7 @@ def thumbnail_to_convert(value):
     for arg in input_args:
         arg = arg.strip().split('=')
         kwargs[arg[0]] = arg[1] if len(arg) > 1 else None
-        
+
     def get_dimensions():
         m = re_geometry.match(geometry)
         if m:
@@ -91,7 +67,9 @@ def thumbnail_to_convert(value):
     if dimensions is None:
         raise ThumbnailException('Invalid geometry.')
 
-    args = ["-strip -thumbnail '%s'" % geometry]
+    # We don't strip the resulting thumbnail, since we want to keep metadata
+    # that we might have set on the source file
+    args = ["-resize '%s'" % geometry]
     if 'crop' in kwargs:
         if None in dimensions:
             raise ThumbnailException('crop needs both width and height.')
@@ -104,3 +82,4 @@ def thumbnail_to_convert(value):
     quality = kwargs.get('quality', settings.CONVERT_THUMBNAIL_QUALITY)
     args.append('-quality %s' % quality)
     return " ".join(args), kwargs.get('ext')
+

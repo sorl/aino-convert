@@ -26,3 +26,4 @@ class AdminMediaFileWidget(forms.TextInput):
             final_attrs['value'] = force_unicode(value)
             img_tag = MediaFile(value).thumbnail('100x100>').tag
         return mark_safe(u'%s<input%s />' % (img_tag, flatatt(final_attrs)))
+
