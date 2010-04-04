@@ -47,7 +47,13 @@ class MediaFile(object):
     @property
     def dimensions(self):
         if not hasattr(self, '_dimensions'):
-            self._dimensions = Image.open(self.path).size
+            try:
+                self._dimensions = Image.open(self.path).size
+            except:
+                if settings.CONVERT_DEBUG:
+                    raise
+                else:
+                    self._dimensions = ('', '')
         return self._dimensions
 
     width = property(lambda self: self.dimensions[0])
