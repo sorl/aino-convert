@@ -114,6 +114,8 @@ class MediaFile(object):
     def convert(self, options, ext=None):
         # we sanitize relation since this is base for the seed and the output
         # filename
+        options = "%s %s %s" % (settings.CONVERT_PREPEND, options,
+                settings.CONVERT_APPEND)
         options = re_whitespace.sub(' ', options.strip())
         dest = get_mediafile(options + self.name, ext)
         if not dest.exists() or getmtime(dest.path) < getmtime(self.path):

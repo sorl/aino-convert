@@ -9,6 +9,12 @@ CONVERT_EXTENSION = 'jpg'
 # default thumbnail quality, 0-100
 CONVERT_THUMBNAIL_QUALITY = 85
 
+# prepend all convert commands with this.
+CONVERT_PREPEND = '-colorspace RGB'
+
+# appnd all convert commands with the following:
+CONVERT_APPEND = ''
+
 # formatting of tag, xhtml anyone?
 CONVERT_TAG = '<img width="%(width)s" height="%(height)s" src="%(url)s">'
 
