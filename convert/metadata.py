@@ -70,7 +70,7 @@ class Metadata(object):
                 try:
                     value = value['x-default']
                 except KeyError:
-                    pass
+                    value = ''
         elif name in XMP_DC_BAGSEQ_PROPERTIES:
             value = ', '.join(value)
         return value
