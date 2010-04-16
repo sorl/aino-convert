@@ -31,8 +31,7 @@ class MediaFile(object):
         if re_remote.match(name):
             name = get_remote(name).name
         self.name = name
-        path = normpath(safe_join(settings.MEDIA_ROOT, self.name))
-        self.path = smart_str(path)
+        self.path = normpath(safe_join(settings.MEDIA_ROOT, self.name))
         path_dir = dirname(self.path)
         if not isdir(path_dir):
             os.makedirs(path_dir)
