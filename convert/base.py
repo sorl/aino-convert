@@ -86,10 +86,13 @@ class MediaFile(object):
     #TODO: cache alternatives for "expensive" disk operations like this
     @property
     def metadata(self):
-        # use local import for use without metadata
         if not hasattr(self, '_metadata'):
-            from metadata import Metadata
-            self._metadata = Metadata(self.path)
+            try:
+                from metadata import Metadata
+            except ImportError:
+                self._metadata = None
+            else:
+                self._metadata = Metadata(self.path)
         return self._metadata
 
     def _write_metadata(self, obj):
