@@ -33,8 +33,9 @@ CONVERT_CACHE = 'cache'
 # 3: will most likely lead to that every cached file will have its own dir
 CONVERT_CACHE_SUBDIR_LEVELS = 1
 
-# write XMP metadata to file, this can be useful for finding stale cache
-CONVERT_WRITE_METADATA = True
+# write XMP metadata to file, this can be useful for finding stale cache,
+# requires pyexiv2
+CONVERT_WRITE_METADATA = False
 
 # will be returned on errors rather than an img tag with an empty source which
 # is known to cause some serious problems as in requesting the paga aigain
