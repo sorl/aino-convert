@@ -1,4 +1,5 @@
 import re
+import shlex
 from subprocess import Popen, PIPE
 from convert.conf import settings
 from django.utils.encoding import smart_str, DEFAULT_LOCALE_ENCODING
@@ -22,14 +23,13 @@ def execute(cmd, args):
     sequence or a basestring, a basestring will be executed with shell=True.
     """
     if isinstance(args, basestring):
-        args = '%s %s' % (cmd, args)
         args = smart_str(args)
-        shell = True
+        args = shlex.split(args)
     else:
-        args.insert(0, cmd)
         args = map(smart_str, args)
-        shell = False
-    p = Popen(args, shell=shell, stderr=PIPE, stdout=PIPE)
+    cmd = smart_str(cmd)
+    args.insert(0, cmd)
+    p = Popen(args, stderr=PIPE, stdout=PIPE)
     retcode = p.wait()
     if retcode != 0:
         raise ExecuteException(p.stderr.read().decode(DEFAULT_LOCALE_ENCODING))

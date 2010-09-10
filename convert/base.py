@@ -19,7 +19,6 @@ re_whitespace = re.compile(r'\s{2,}')
 re_ext = re.compile(r'\.([a-zA-Z]{2,4})$')
 
 
-
 class MediaFile(object):
     """
     A media file wrapper, targeted for image manipulation using
