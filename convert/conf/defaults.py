@@ -7,7 +7,7 @@ from django.conf import settings
 CONVERT_EXTENSION = 'jpg'
 
 # default thumbnail quality, 0-100
-CONVERT_THUMBNAIL_QUALITY = 85
+CONVERT_THUMBNAIL_QUALITY = 95
 
 # prepend all convert commands with this.
 CONVERT_PREPEND = '-colorspace RGB'
