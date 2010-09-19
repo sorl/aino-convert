@@ -4,8 +4,8 @@
 </head>
 <body>
 
-<p>&#123;% convert "mask.jpg" "-edge 1 -negate -normalize -colorspace Gray -blur 0x.5 -contrast-stretch 0x50%" "gif" as im %&#125;<p>
-{% convert "mask.jpg" "-edge 1 -negate -normalize -colorspace Gray -blur 0x.5 -contrast-stretch 0x50%" "gif" as im %}
+<p>&#123;% convert "øl mask.jpg" "-edge 1 -negate -normalize -colorspace Gray -blur 0x.5 -contrast-stretch 0x50%" "gif" as im %&#125;<p>
+{% convert "øl mask.jpg" "-edge 1 -negate -normalize -colorspace Gray -blur 0x.5 -contrast-stretch 0x50%" "gif" as im %}
 <ul>
     <li>im.width: {{ im.width }}</li>
     <li>im.height: {{ im.height }}</li>

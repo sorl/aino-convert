@@ -4,11 +4,11 @@
 </head>
 <body>
 
-<p>&#123;% convert "mask.jpg" "-resize 200x200 \( +clone -flip -fill black -colorize 85% \) -append -size 200x300 xc:black +swap -gravity North -geometry +0+5 -composite" "png" %&#125;</p>
-{% convert "mask.jpg" "-resize 200x200 \( +clone -flip -fill black -colorize 85% \) -append -size 200x300 xc:black +swap -gravity North -geometry +0+5 -composite" "png" %}
+<p>&#123;% convert "øl mask.jpg" "-resize 200x200 \( +clone -flip -fill black -colorize 85% \) -append -size 200x300 xc:black +swap -gravity North -geometry +0+5 -composite" "png" %&#125;</p>
+{% convert "øl mask.jpg" "-resize 200x200 \( +clone -flip -fill black -colorize 85% \) -append -size 200x300 xc:black +swap -gravity North -geometry +0+5 -composite" "png" %}
 
-<p>&#123;% convert "mask.jpg" "-sigmoidal-contrast 4x20% -thumbnail '500x200^' -crop 500x200+60+60" %&#125;</p>
-{% convert "mask.jpg" "-sigmoidal-contrast 4x20% -thumbnail '500x200^' -crop 500x200+60+60 -colorspace gray" %}
+<p>&#123;% convert "øl mask.jpg" "-sigmoidal-contrast 4x20% -thumbnail '500x200^' -crop 500x200+60+60" %&#125;</p>
+{% convert "øl mask.jpg" "-sigmoidal-contrast 4x20% -thumbnail '500x200^' -crop 500x200+60+60 -colorspace gray" %}
 
 <p>&#123;% convert "aino.jpg" "-resize 200x200 \( +clone -scale 12.5%  -scale 800% \) \( +clone -gamma 0 -fill white -draw 'circle 110,68 100,100' -blur  10x4 \) -composite" %&#125;</p>
 {% convert "aino.jpg" "-resize 200x200 \( +clone -scale 12.5%  -scale 800% \) \( +clone -gamma 0 -fill white -draw 'circle 110,68 100,100' -blur  10x4 \) -composite" %}

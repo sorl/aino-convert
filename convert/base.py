@@ -120,7 +120,7 @@ class MediaFile(object):
         options = re_whitespace.sub(' ', options.strip())
         dest = get_mediafile(options + self.name, ext)
         if not dest.exists() or getmtime(dest.path) < getmtime(self.path):
-            args = "%s %s %s" % (self.path, options, dest.path)
+            args = '"%s" %s "%s"' % (self.path, options, dest.path)
             helpers.execute(settings.CONVERT_PATH, args)
             dest._write_metadata({'source': self.name, 'relation': [options]})
         return dest
