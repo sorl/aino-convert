@@ -4,7 +4,18 @@ from django.utils.encoding import force_unicode
 from base import MediaFile
 
 
-class MediaFileField(models.CharField):
+class South(object):
+    """
+    Just a south introspection Mixin
+    """
+    def south_field_triple(self):
+        from south.modelsinspector import introspector
+        cls_name = '%s.%s' % (self.__class__.__module__ , self.__class__.__name__)
+        args, kwargs = introspector(self)
+        return (cls_name, args, kwargs)
+
+
+class MediaFileField(South, models.CharField):
     """
     The main idea is to have a filepath relative MEDIA_ROOT in this field. It
     is up to the user to implement how this is acheived. It does by design not
