@@ -13,7 +13,7 @@ fp.close()
 setup(
     name='aino-convert',
     version='0.1.0.14',
-    url='http://bitbucket.org/aino/aino-convert/',
+    url='https://github.com/aino/aino-convert',
     license='BSD',
     author='Mikko Hellsing',
     author_email='mikko@aino.se',
